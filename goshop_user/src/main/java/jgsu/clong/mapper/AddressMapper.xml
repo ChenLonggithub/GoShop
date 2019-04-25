@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="jgsu.clong.mapper.AddressMapper">
+
+    <select id="select_addresses" resultType="jgsu.clong.bean.T_MALL_ADDRESS"
+            parameterType="jgsu.clong.bean.T_MALL_USER_ACCOUNT">
+		select * from t_mall_address where yh_id = #{id}
+	</select>
+
+    <select id="select_address" parameterType="int"
+            resultType="jgsu.clong.bean.T_MALL_ADDRESS">
+		select * from t_mall_address where id = #{address_id}
+	</select>
+</mapper>

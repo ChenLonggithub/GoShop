@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jgsu.clong.mapper.SkuMapper">
+
+    <insert id="insert_sku_value">
+        insert into
+        t_mall_sku_attr_value(
+        shxm_id,
+        shxzh_id,
+        shp_id,
+        sku_id
+        )
+        values
+        <foreach collection="list_value" item="value" separator=",">
+            (
+            #{value.shxm_id},
+            #{value.shxzh_id},
+            #{shp_id},
+            #{sku_id}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insert_sku" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+        insert into t_mall_sku(
+		shp_id,
+		kc,
+		jg,
+		sku_mch,
+		kcdz
+		)
+		values
+		(
+		#{shp_id},
+		#{kc},
+		#{jg},
+		#{sku_mch},
+		#{kcdz}
+		)
+    </insert>
+
+    <select id="querySpu" parameterType="Map" resultType="jgsu.clong.bean.T_MALL_PRODUCT">
+        select * from t_mall_product where flbh2=#{flbh2} and pp_id=#{pp_id}
+    </select>
+</mapper>

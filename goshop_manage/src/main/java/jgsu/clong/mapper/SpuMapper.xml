@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jgsu.clong.mapper.SpuMapper">
+
+    <!--插入spu 的图片-->
+    <insert id="insert_image" parameterType="Map">
+        insert into t_mall_product_image(shp_id,url)
+        values
+        <foreach collection="list_image" item="image" separator=",">
+            (#{shp_id},#{image})
+        </foreach>
+    </insert>
+
+    <!--主键返回策略，useGeneratedkeys,默认为false-->
+    <insert id="insert_spu" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="jgsu.clong.bean.T_MALL_PRODUCT">
+		insert into t_mall_product
+			(shp_mch,shp_tp,flbh1,flbh2,pp_id,shp_msh)
+		values
+		(#{shp_mch},#{shp_tp},#{flbh1},#{flbh2},#{pp_id},#{shp_msh})
+	</insert>
+</mapper>

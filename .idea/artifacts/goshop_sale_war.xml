@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="goshop_sale:war">
+    <output-path>$PROJECT_DIR$/goshop_sale/target</output-path>
+    <root id="archive" name="goshop_sale.war">
+      <element id="artifact" artifact-name="goshop_sale:war exploded" />
+    </root>
+  </artifact>
+</component>

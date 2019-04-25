@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jgsu.clong.mapper.AttributeMapper">
+
+    <!--封装数据，将对应的主键封装好即可，可以使用mybatis的自动映射来完成-->
+    <resultMap id="attr_value" type="jgsu.clong.bean.OBJECT_T_MALL_ATTR"
+               autoMapping="true">
+        <result property="id" column="attr_id"></result>
+        <collection property="list_value" ofType="jgsu.clong.bean.T_MALL_VALUE"
+                    autoMapping="true">
+            <result column="val_id" property="id"></result>
+        </collection>
+    </resultMap>
+
+    <!--查询属性值，将的到的结果封装，这里要使用resultMap来进行数据库和对象之间的映射-->
+    <select id="queryAttrList" resultMap="attr_value">
+        select attr.Id as attr_id,attr.*,val.Id as val_id,val.*
+          from t_mall_attr attr ,t_mall_value val
+          where attr.Id=val.shxm_id and attr.flbh2=#{flbh2}
+    </select>
+
+    <select id="findAttr" resultType="jgsu.clong.bean.T_MALL_ATTR">
+        select * from t_mall_attr;
+    </select>
+
+
+    <!--插入属性，并返回主键的值-->
+    <insert id="insert_attr" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="attr.id">
+        insert into t_mall_attr(shxm_mch,flbh2) values
+              (#{attr.shxm_mch},#{flbh2})
+    </insert>
+
+    <!--插入属性值，因为属性值是多个的，所以要循环遍历，插入数据-->
+    <insert id="insert_values">
+        insert into t_mall_value(shxzh,shfqy,shxm_id,shxzh_mch)
+        values
+        <foreach collection="list_value" item="item" separator=",">
+            (#{item.shxzh},1,#{id},#{item.shxzh_mch})
+        </foreach>
+    </insert>
+
+</mapper>
