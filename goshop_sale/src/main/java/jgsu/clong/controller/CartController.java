@@ -129,7 +129,9 @@ public class CartController {
                     // 老车，更新
                     for (int i = 0; i < list_cart.size(); i++) {
                         if (list_cart.get(i).getSku_id() == cart.getSku_id()) {
+                            /*遍历循环，要有相同的商品，则把购物车的商品 数量加一*/
                             list_cart.get(i).setTjshl(list_cart.get(i).getTjshl() + cart.getTjshl());
+                            /*计算该商品的合计，该商品的数目 * 该商品的价格*/
                             list_cart.get(i).setHj(list_cart.get(i).getTjshl() * list_cart.get(i).getSku_jg());
                         }
                     }
@@ -143,6 +145,7 @@ public class CartController {
             list_cart = (List<T_MALL_SHOPPINGCAR>) session.getAttribute("list_cart_session");// 数据库
             // 用户已登陆，操作db
 
+            /*判断该商品是否存在*/
             boolean b = cartService.if_cart_exists(cart);
 
             if (!b) {

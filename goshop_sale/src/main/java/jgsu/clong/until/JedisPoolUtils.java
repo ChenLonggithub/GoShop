@@ -20,7 +20,7 @@ public class JedisPoolUtils {
 		c.setTestOnBorrow(true); // 获取连接时是否检查连接的有效性：是
 		c.setTestWhileIdle(true); // 空闲时是否检查连接的有效性：是
 
-		jedisPool = new JedisPool(c, "192.168.222.11", 6379); // 初始化连接池
+		jedisPool = new JedisPool(c, "192.168.137.120", 6379); // 初始化连接池
 	}
 
 	/**

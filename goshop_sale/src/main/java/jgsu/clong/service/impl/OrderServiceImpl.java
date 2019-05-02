@@ -4,8 +4,10 @@ import jgsu.clong.bean.OBJECT_T_MALL_FLOW;
 import jgsu.clong.bean.OBJECT_T_MALL_ORDER;
 import jgsu.clong.bean.T_MALL_ADDRESS;
 import jgsu.clong.bean.T_MALL_ORDER_INFO;
+import jgsu.clong.exception.OverSaleException;
 import jgsu.clong.mapper.OrderMapper;
 import jgsu.clong.service.OrderService;
+import jgsu.clong.until.MyDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,14 +64,19 @@ public class OrderServiceImpl implements OrderService {
     public void pay_success(OBJECT_T_MALL_ORDER order) throws OverSaleException {
 
         // 修改订单状态，已支付
-
-        // 修改订单信息
+        order.setJdh(2);
+        orderMapper.update_order(order);
 
         // 修改物流信息
         List<OBJECT_T_MALL_FLOW> list_flow = order.getList_flow();
         for (int i = 0; i < list_flow.size(); i++) {
             OBJECT_T_MALL_FLOW flow = list_flow.get(i);
             // 修改物流的业务
+            flow.setPsmsh("商品正在出库");
+            flow.setPsshj(MyDateUtil.getMyDate(1));
+            flow.setYwy("龙哥");
+            flow.setLxfsh("1111111000");
+            orderMapper.update_flow(flow);
 
             List<T_MALL_ORDER_INFO> list_info = flow.getList_info();
             // 修改sku数据量和销量等信息
@@ -79,23 +86,27 @@ public class OrderServiceImpl implements OrderService {
                 // 查询库存的业务
                 long kc = 0;
                 // 判断库存警戒线
-                long count = 0;
-                if (count == 0) {
-                    kc = 1;// 执行锁sql
-                } else {
-                    kc = 1;// 执行不锁sql
-                }
-                if (kc > info.getSku_shl()) {// 先确定kc大于购买数量
+                long count = orderMapper.select_count_kc(info.getSku_id());
+                Map<Object, Object> map = new HashMap<Object, Object>();
+                map.put("count", count);
+                map.put("sku_id", info.getSku_id());
+                kc = orderMapper.select_kc(map);
+                // if (count == 0) {
+                // kc = 1;// 执行锁sql
+                // } else {
+                // kc = 1;// 执行不锁sql
+                // }
+                if (kc >= info.getSku_shl()) {// 先确定kc大于购买数量
                     // 对kc进行修改
+                    orderMapper.update_kc(info);
                 } else {
                     throw new OverSaleException("over sale");
                 }
             }
-
         }
 
         // 修改订单状态，出库
-
+        order.setYjsdshj(MyDateUtil.getMyDate(3));
+        orderMapper.update_order(order);
     }
-
 }

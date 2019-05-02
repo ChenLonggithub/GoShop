@@ -2,16 +2,20 @@
 <!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="jgsu.clong.mapper.OrderMapper">
 
-    <select id="select_count_kc">
-		select count(1) from t_mall_sku where id = 1 and kc
+    <select id="select_count_kc" parameterType="int" resultType="long">
+		select count(1) from
+		t_mall_sku where id = #{sku_id} and kc
 		>10
 	</select>
 
-    <select id="select_kc" parameterType="int" resultType="long">
-		select kc
-		from t_mall_sku
-		where id = #{id} for update
-	</select>
+    <select id="select_kc" parameterType="Map" resultType="long">
+        select kc
+        from t_mall_sku
+        where id = #{sku_id}
+        <if test="count==0">
+            for update
+        </if>
+    </select>
 
 
     <update id="update_kc" parameterType="jgsu.clong.bean.T_MALL_ORDER_INFO">
@@ -129,5 +133,6 @@
             )
         </foreach>
     </insert>
+
 
 </mapper>

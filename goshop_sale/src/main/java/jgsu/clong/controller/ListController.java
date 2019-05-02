@@ -19,7 +19,6 @@ public class ListController {
 
     @Autowired
     ListService listService;
-
     @Autowired
     ItemServiceI itemServiceI;
 
@@ -35,8 +34,6 @@ public class ListController {
     @RequestMapping("goto_sku_detail")
     public String goto_sku_detail(int sku_id, int spu_id, ModelMap map) {
 
-
-
         // 查询商品详细信息对象
         DETAIL_T_MALL_SKU obj_sku = itemServiceI.getSkuDetail(sku_id);
 
@@ -46,7 +43,6 @@ public class ListController {
         // 查询商品销售属性列表
         // 颜色列表
         // 版本列表
-
         map.put("obj_sku", obj_sku);
         map.put("list_sku", list_sku);
         return "sku_detail";

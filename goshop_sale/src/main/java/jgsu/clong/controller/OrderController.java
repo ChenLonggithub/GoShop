@@ -1,6 +1,7 @@
 package jgsu.clong.controller;
 
 import jgsu.clong.bean.*;
+import jgsu.clong.exception.OverSaleException;
 import jgsu.clong.server.AddressServer;
 import jgsu.clong.service.CartService;
 import jgsu.clong.service.OrderService;
@@ -29,10 +30,8 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-
-
     @RequestMapping("goto_checkOrder")
-    public String goto_checkOrder(HttpSession session, ModelMap map){
+    public String goto_checkOrder(HttpSession session, ModelMap map) {
 
         List<T_MALL_SHOPPINGCAR> list_cart = new ArrayList<T_MALL_SHOPPINGCAR>();
 
@@ -124,13 +123,27 @@ public class OrderController {
         session.setAttribute("list_cart_session", cartService.get_list_cart_by_user(user));
 
         // 重定向到支付服务，传入订单号和交易金额
-        return "redirect:/goto_pay.do";
+        //return "pay";
+        return "redirect:goto_pay.do";
     }
 
     @RequestMapping("goto_pay")
     public String goto_pay() {
         // 伪支付服务
-        return "pay";
+        return "pay_0";
+    }
+
+    @RequestMapping("realPay_success")
+    public String realPay_success(@ModelAttribute("order") OBJECT_T_MALL_ORDER order) {
+        // 支付成功,真实调用支付宝
+        try {
+            orderService.pay_success(order);
+        } catch (OverSaleException e) {
+
+            e.printStackTrace();
+            return "success";
+        }
+        return "success";
     }
 
     @RequestMapping("pay_success")
@@ -139,8 +152,8 @@ public class OrderController {
         try {
             orderService.pay_success(order);
         } catch (OverSaleException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return "redirect:/orderFaile.do";
         }
         return "redirect:/order_success.do";
     }
@@ -148,6 +161,11 @@ public class OrderController {
     @RequestMapping("order_success")
     public String order_success() {
         return "orderSuccess";
+    }
+
+    @RequestMapping("orderFaile")
+    public String orderFaile() {
+        return "orderFaile";
     }
 
     private BigDecimal get_sum(List<T_MALL_SHOPPINGCAR> list_cart) {

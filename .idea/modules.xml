@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/goshop_manage/goshop_manage.iml" filepath="$PROJECT_DIR$/goshop_manage/goshop_manage.iml" />
       <module fileurl="file://$PROJECT_DIR$/goshop_sale/goshop_sale.iml" filepath="$PROJECT_DIR$/goshop_sale/goshop_sale.iml" />
       <module fileurl="file://$PROJECT_DIR$/goshop_user/goshop_user.iml" filepath="$PROJECT_DIR$/goshop_user/goshop_user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pay_service/pay_service.iml" filepath="$PROJECT_DIR$/pay_service/pay_service.iml" />
     </modules>
   </component>
 </project>

@@ -65,13 +65,10 @@ public class MyJsonUtil {
 			try {
 				decode = URLDecoder.decode(json, "utf-8");
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			JSONArray fromObject2 = JSONArray.fromObject(decode);
-
 			List<T> list_array = (List<T>) JSONArray.toCollection(fromObject2, t);
-
 			return list_array;
 		}
 
