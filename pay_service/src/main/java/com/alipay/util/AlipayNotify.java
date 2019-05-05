@@ -36,7 +36,6 @@ public class AlipayNotify {
     	 try {
 			System.out.println(new String("å³æ¶å°è´¦æµè¯".getBytes("ISO-8859-1"), "utf-8"));
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		};
 	}
@@ -56,7 +55,6 @@ public class AlipayNotify {
     		try {
 				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     		newParams.put(name, valueStr);

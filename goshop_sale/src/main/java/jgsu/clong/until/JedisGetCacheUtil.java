@@ -10,43 +10,77 @@ import java.util.Set;
 
 public class JedisGetCacheUtil {
 
-    /*获取Redis缓存的数据集合*/
-    public static <T> List<T> getList(String key, Class<T> t) {
-
-        List<T> list_attr = new ArrayList<>();
-
-        // 第三方数据调用
+    public static String interKeys(String... keys) {
         Jedis jedis = null;
         try {
             jedis = JedisPoolUtils.getJedis();
-            System.out.println("==>>>>>>>>>>>>>>>>>>>>>>"+jedis.ping());
         } catch (Exception e) {
             return null;
         }
 
-        Set<String> list = jedis.zrange(key, 0, -1);
-
-        Iterator<String> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            String skuStr = iterator.next();
-            T sku = MyJsonUtil.json_to_object(skuStr, t);
-            list_attr.add(sku);
+        // 生成动态的key
+        String k0 = "combine";
+        for (int i = 0; i < keys.length; i++) {
+            k0 = k0 + "_" + keys[i];
         }
-
-        return list_attr;
+        if (!jedis.exists(k0)) {
+            jedis.zinterstore(k0, keys);
+        }
+        return k0;
     }
 
-    public static void addCache(String key, int flbh2, String value) {
+    public static <T> List<T> getList(String key, Class<T> t) {
+        List<T> list = new ArrayList<T>();
 
         // 第三方数据调用
         Jedis jedis = null;
         try {
             jedis = JedisPoolUtils.getJedis();
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
 
-        jedis.zadd(key, flbh2,value);
+        Set<String> zrange = jedis.zrange(key, 0, -1);
+        Iterator<String> iterator = zrange.iterator();
+        while (iterator.hasNext()) {
+            String skuStr = iterator.next();
 
+            T sku = MyJsonUtil.json_to_object(skuStr, t);
+
+            list.add(sku);
+        }
+
+        return list;
+    }
+
+    public static <T> void setKey(String key, List<T> list) {
+
+        // 第三方数据调用
+        Jedis jedis = null;
+        try {
+            jedis = JedisPoolUtils.getJedis();
+        } catch (Exception e) {
+            // 记日志
+        }
+
+        jedis.del(key);
+        // 同步reids
+        for (int i = 0; i < list.size(); i++) {
+            jedis.zadd(key, i, MyJsonUtil.object_to_json(list.get(i)));
+        }
+
+    }
+
+    public static boolean if_key(String key) {
+        // 第三方数据调用
+        Jedis jedis = null;
+        try {
+            jedis = JedisPoolUtils.getJedis();
+        } catch (Exception e) {
+            // 记日志
+        }
+        Boolean exists = jedis.exists(key);
+
+        return exists;
     }
 }

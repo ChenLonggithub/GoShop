@@ -9,6 +9,7 @@
         <module name="goshop_manage" />
         <module name="goshop_sale" />
         <module name="goshop_user" />
+        <module name="keyword_search" />
         <module name="pay_service" />
       </profile>
     </annotationProcessing>
@@ -16,6 +17,7 @@
       <module name="goshop_manage" target="1.8" />
       <module name="goshop_sale" target="1.8" />
       <module name="goshop_user" target="1.8" />
+      <module name="keyword_search" target="1.8" />
       <module name="pay_service" target="1.8" />
     </bytecodeTargetLevel>
   </component>

@@ -4,6 +4,7 @@
     <file type="web" url="file://$PROJECT_DIR$/goshop_manage" />
     <file type="web" url="file://$PROJECT_DIR$/goshop_sale" />
     <file type="web" url="file://$PROJECT_DIR$/goshop_user" />
+    <file type="web" url="file://$PROJECT_DIR$/keyword_search" />
     <file type="web" url="file://$PROJECT_DIR$/pay_service" />
   </component>
   <component name="MavenProjectsManager">
@@ -13,6 +14,7 @@
         <option value="$PROJECT_DIR$/goshop_sale/pom.xml" />
         <option value="$PROJECT_DIR$/goshop_user/pom.xml" />
         <option value="$PROJECT_DIR$/pay_service/pom.xml" />
+        <option value="$PROJECT_DIR$/keyword_search/pom.xml" />
       </list>
     </option>
   </component>
