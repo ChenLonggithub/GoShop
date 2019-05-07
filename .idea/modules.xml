@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/goshop_log/goshop_log.iml" filepath="$PROJECT_DIR$/goshop_log/goshop_log.iml" />
       <module fileurl="file://$PROJECT_DIR$/goshop_manage/goshop_manage.iml" filepath="$PROJECT_DIR$/goshop_manage/goshop_manage.iml" />
       <module fileurl="file://$PROJECT_DIR$/goshop_sale/goshop_sale.iml" filepath="$PROJECT_DIR$/goshop_sale/goshop_sale.iml" />
+      <module fileurl="file://$PROJECT_DIR$/goshop_sale_controller/goshop_sale_controller.iml" filepath="$PROJECT_DIR$/goshop_sale_controller/goshop_sale_controller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/goshop_sale_service/goshop_sale_service.iml" filepath="$PROJECT_DIR$/goshop_sale_service/goshop_sale_service.iml" />
       <module fileurl="file://$PROJECT_DIR$/goshop_user/goshop_user.iml" filepath="$PROJECT_DIR$/goshop_user/goshop_user.iml" />
       <module fileurl="file://$PROJECT_DIR$/keyword_search/keyword_search.iml" filepath="$PROJECT_DIR$/keyword_search/keyword_search.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mq_comsumer/mq_comsumer.iml" filepath="$PROJECT_DIR$/mq_comsumer/mq_comsumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mq_producer/mq_producer.iml" filepath="$PROJECT_DIR$/mq_producer/mq_producer.iml" />
       <module fileurl="file://$PROJECT_DIR$/pay_service/pay_service.iml" filepath="$PROJECT_DIR$/pay_service/pay_service.iml" />
     </modules>
   </component>

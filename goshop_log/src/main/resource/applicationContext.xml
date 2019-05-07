@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-4.0.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+      http://www.springframework.org/schema/aop
+      http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+      http://www.springframework.org/schema/jms
+      http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+      http://activemq.apache.org/schema/core
+      http://activemq.apache.org/schema/core/activemq-core-5.14.5.xsd">
+
+    <!--数据库加载配置文件-->
+    <context:property-placeholder location="classpath:dbConfig.properties"/>
+
+    <!--配置spring扫描-->
+    <context:component-scan base-package="jgsu.clong.service" use-default-filters="false">
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Service"></context:include-filter>
+    </context:component-scan>
+
+    <!--===================================================================================================================-->
+
+    <!--配置数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${driverClassName}"></property>
+        <property name="url" value="${url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+
+    <!--配置mybatis数据源文件-->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+
+    </bean>
+
+
+    <!--配置mybatis Mapper扫描的相关-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="jgsu.clong.mapper"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"></property>
+    </bean>
+
+    <context:annotation-config/>
+
+    <!--===================================================================================================================-->
+
+    <!--配置消息队列-->
+    <!-- 消费者 -->
+
+    <!-- 1.ActiveMQ的连接工厂 -->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+
+    <!-- 2.Spring Caching连接工厂 -->
+    <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory" ref="targetConnectionFactory"></property>
+        <!-- Session缓存数量 -->
+        <property name="sessionCacheSize" value="100" />
+    </bean>
+
+    <!-- 执行消息任务的模板 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+    </bean>
+
+    <!--配置消息模式-订阅或者队列-->
+    <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="topic" />
+    </bean>
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="queue" />
+    </bean>
+
+    <!--自定义监听器-->
+    <bean id="myLogListener" class="jgsu.clong.listener.MyLogListener"/>
+
+    <!-- 消息监听容器 -->
+    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destination" ref="queueDestination" />
+        <property name="messageListener" ref="myLogListener" />
+    </bean>
+
+    <!--订阅模式监听容器-->
+<!--    <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destination" ref="topicDestination" />
+        <property name="messageListener" ref="myLogListener" />
+    </bean>-->
+</beans>

@@ -6,18 +6,28 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="goshop_log" />
         <module name="goshop_manage" />
         <module name="goshop_sale" />
+        <module name="goshop_sale_controller" />
+        <module name="goshop_sale_service" />
         <module name="goshop_user" />
         <module name="keyword_search" />
+        <module name="mq_comsumer" />
+        <module name="mq_producer" />
         <module name="pay_service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8">
+      <module name="goshop_log" target="1.8" />
       <module name="goshop_manage" target="1.8" />
       <module name="goshop_sale" target="1.8" />
+      <module name="goshop_sale_controller" target="1.8" />
+      <module name="goshop_sale_service" target="1.8" />
       <module name="goshop_user" target="1.8" />
       <module name="keyword_search" target="1.8" />
+      <module name="mq_comsumer" target="1.5" />
+      <module name="mq_producer" target="1.5" />
       <module name="pay_service" target="1.8" />
     </bytecodeTargetLevel>
   </component>

@@ -32,7 +32,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.0.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.0.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aspects:4.0.0.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.0.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.8.13" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.2.8" />
@@ -77,6 +76,9 @@
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-ws-addr:3.0.5" />
           <element id="library" level="project" name="Maven: org.apache.cxf:cxf-rt-ws-policy:3.0.5" />
           <element id="library" level="project" name="Maven: org.apache.neethi:neethi:3.0.3" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jms:4.0.0.RELEASE" />
+          <element id="library" level="project" name="Maven: org.apache.activemq:activemq-all:5.11.2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.0.0.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">

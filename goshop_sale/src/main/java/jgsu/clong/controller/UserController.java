@@ -7,16 +7,22 @@ import jgsu.clong.service.CartService;
 import jgsu.clong.service.UserService;
 import jgsu.clong.until.MyJsonUtil;
 import jgsu.clong.until.MyPropertiesUtil;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +44,12 @@ public class UserController {
 
     @Autowired
     LoginServer loginServer;
+
+    @Autowired
+    JmsTemplate jmsTemplate;
+
+    @Autowired
+    ActiveMQQueue queueDestination;
 
     @RequestMapping("goto_logout")
     public String goto_logout(HttpSession session){
@@ -82,6 +94,17 @@ public class UserController {
         if (db_user == null) {
             return "redirect:/goto_login.do";
         } else {
+
+            // 异步调用消息队列，发布日志的消息
+            // 发送mq消息
+            final String message = db_user.getId() + "-" + db_user.getYh_mch() + "-登陆";
+            jmsTemplate.send(queueDestination, new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    return session.createTextMessage(message);
+                }
+            });
+
             session.setAttribute("user", db_user);
 
             // 在客户端存储用户个性化信息，方便用户下次再访问网站时使用

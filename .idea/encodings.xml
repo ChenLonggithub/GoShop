@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/goshop_log" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/goshop_manage" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/goshop_sale" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/goshop_sale_controller" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/goshop_sale_service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/goshop_user" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/keyword_search" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pay_service" charset="UTF-8" />

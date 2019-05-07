@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amq="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-4.0.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+      http://www.springframework.org/schema/aop
+      http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+      http://www.springframework.org/schema/jms
+      http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+      http://activemq.apache.org/schema/core
+      http://activemq.apache.org/schema/core/activemq-core-5.14.5.xsd
+      http://code.alibabatech.com/schema/dubbo
+      http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--数据库加载配置文件-->
+    <context:property-placeholder location="classpath:dbConfig.properties"/>
+
+    <!--配置spring扫描-->
+    <context:component-scan base-package="jgsu.clong.service" use-default-filters="false">
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Service"></context:include-filter>
+    </context:component-scan>
+
+    <!--配置数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${driverClassName}"></property>
+        <property name="url" value="${url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+
+    <!--配置mybatis数据源文件-->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+
+    </bean>
+
+    <!--===================================================================================================================-->
+
+    <!--配置mybatis Mapper扫描的相关-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="jgsu.clong.mapper"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"></property>
+    </bean>
+
+    <context:annotation-config/>
+
+    <!--===================================================================================================================-->
+
+    <!--事物配置-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <tx:advice id="txAdice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="pt1" expression="execution(* jgsu.clong.service.impl.*.*(..))"></aop:pointcut>
+        <aop:advisor advice-ref="txAdice" pointcut-ref="pt1"></aop:advisor>
+    </aop:config>
+
+    <!--===================================================================================================================-->
+
+    <!--配置消息队列-->
+    <!-- jsm消息工厂 -->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+    </bean>
+    <bean id="connectionFactory"
+          class="org.springframework.jms.connection.SingleConnectionFactory">
+        <!--产生JMS Connection的ConnectionFactory -->
+        <property name="targetConnectionFactory" ref="targetConnectionFactory"/>
+    </bean>
+
+    <!-- 执行消息任务的模板 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>
+
+    <!--配置消息模式-订阅或者队列-->
+    <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="topic"/>
+    </bean>
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="queue"/>
+    </bean>
+
+    <!--=============================================================================================-->
+    <!--分布式部署dubbo-->
+    <!-- 1 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="goshop_service"/>
+
+    <!-- 2 注册中心地址 -->
+    <dubbo:registry protocol="zookeeper" address="192.168.137.120:2181"/>
+
+    <!-- 3 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service id="listService" interface="jgsu.clong.service.ListService"
+                   ref="listServiceImpl"/>
+    <dubbo:service id="userService" interface="jgsu.clong.service.UserService"
+                   ref="userServiceImpl"/>
+    <dubbo:service timeout="300000" id="cartServiceInf" interface="jgsu.clong.service.CartService"
+                   ref="cartServiceImpl"/>
+    <dubbo:service id="itemServiceI" interface="jgsu.clong.service.ItemServiceI"
+                   ref="itemServiceImpl"/>
+    <dubbo:service id="orderService" interface="jgsu.clong.service.OrderService"
+                   ref="orderServiceImpl"/>
+
+
+</beans>

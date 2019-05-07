@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jgsu.clong.mapper.ListMapper">
+
+    <select id="quertSkuByAttr">
+
+    </select>
+
+    <!--封装数据，将对应的主键封装好即可，可以使用mybatis的自动映射来完成-->
+    <resultMap id="queryAttrValue_map" type="jgsu.clong.bean.OBJECT_T_MALL_ATTR"
+               autoMapping="true">
+        <result property="id" column="attr_id"></result>
+        <collection property="list_value" ofType="jgsu.clong.bean.T_MALL_VALUE"
+                    autoMapping="true">
+            <result column="val_id" property="id"></result>
+        </collection>
+    </resultMap>
+
+    <!--查询属性值，将的到的结果封装，这里要使用resultMap来进行数据库和对象之间的映射-->
+    <select id="queryAttrList" resultMap="queryAttrValue_map">
+        select attr.Id as attr_id,attr.*,val.Id as val_id,val.*
+        from t_mall_attr attr ,t_mall_value val
+        where attr.Id=val.shxm_id and attr.flbh2=#{flbh2}
+    </select>
+
+    <select id="querySkuList" parameterType="int"
+            resultMap="querySkuList_map">
+		SELECT spu.id as spu_id , spu.*,sku.id as sku_id ,sku.*,tm.id as tm_id ,tm.*
+		FROM t_mall_product spu,t_mall_sku sku,t_mall_trade_mark tm
+		WHERE
+		spu.Id = sku.shp_id and spu.pp_id = tm.Id and spu.flbh2 =#{flbh2}
+
+	</select>
+
+    <resultMap type="jgsu.clong.bean.OBJECT_T_MALL_SKU" id="querySkuList_map"
+               autoMapping="true">
+        <id column="sku_id" property="id"/>
+        <association property="spu" javaType="jgsu.clong.bean.T_MALL_PRODUCT"
+                     autoMapping="true">
+            <id column="spu_id" property="id"/>
+        </association>
+        <association property="tm" javaType="jgsu.clong.bean.T_MALL_TRADE_MARK"
+                     autoMapping="true">
+            <id column="tm_id" property="id"/>
+        </association>
+    </resultMap>
+</mapper>
