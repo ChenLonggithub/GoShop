@@ -1,10 +1,10 @@
 package jgsu.clong.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import jgsu.clong.bean.T_MALL_SHOPPINGCAR;
 import jgsu.clong.bean.T_MALL_USER_ACCOUNT;
 import jgsu.clong.mapper.CartMapper;
 import jgsu.clong.service.CartService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class CartServiceImpl implements CartService {
 
 
-    @Autowired
+    @Reference
     CartMapper cartMapper;
 
     @Override

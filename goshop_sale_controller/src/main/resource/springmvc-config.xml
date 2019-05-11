@@ -41,8 +41,8 @@
     </bean>
 
     <!--启动SpringMVC注解-->
-    <mvc:annotation-driven></mvc:annotation-driven>
-    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+    <mvc:annotation-driven/>
+    <mvc:default-servlet-handler/>
 
 
     <!--配置消息队列-->
@@ -76,15 +76,14 @@
     <dubbo:application name="goshop_controller"/>
 
     <!-- 2 注册中心地址 -->
+
     <dubbo:registry protocol="zookeeper" address="192.168.137.120:2181"/>
 
     <!-- 3 需要引用的接口服务 -->
-
-    <!-- 声明需要暴露的服务接口 -->
-    <dubbo:service id="listService" interface="jgsu.clong.service.ListService"/>
-    <dubbo:service id="userService" interface="jgsu.clong.service.UserService"/>
-    <dubbo:service id="cartService" interface="jgsu.clong.service.CartService"/>
-    <dubbo:service id="itemServiceI" interface="jgsu.clong.service.ItemServiceI"/>
-    <dubbo:service id="orderService" interface="jgsu.clong.service.OrderService"/>
+    <dubbo:reference  id="listService" interface="jgsu.clong.service.ListService"/>
+    <dubbo:reference  id="userService" interface="jgsu.clong.service.UserService"/>
+    <dubbo:reference  id="cartService" interface="jgsu.clong.service.CartService"/>
+    <dubbo:reference  id="itemServiceI" interface="jgsu.clong.service.ItemServiceI"/>
+    <dubbo:reference  id="orderService" interface="jgsu.clong.service.OrderService"/>
 
 </beans>

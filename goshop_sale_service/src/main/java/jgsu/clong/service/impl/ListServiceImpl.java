@@ -1,13 +1,12 @@
 package jgsu.clong.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
+import org.springframework.stereotype.Service;
 import jgsu.clong.bean.OBJECT_T_MALL_ATTR;
 import jgsu.clong.bean.OBJECT_T_MALL_SKU;
 import jgsu.clong.bean.T_MALL_SKU_ATTR_VALUE;
 import jgsu.clong.mapper.ListMapper;
 import jgsu.clong.service.ListService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,7 @@ import java.util.Map;
 @Service
 public class ListServiceImpl implements ListService {
 
-    @Autowired
+    @Reference
     ListMapper listMapper;
 
     @Override

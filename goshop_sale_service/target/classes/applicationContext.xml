@@ -116,12 +116,10 @@
                    ref="listServiceImpl"/>
     <dubbo:service id="userService" interface="jgsu.clong.service.UserService"
                    ref="userServiceImpl"/>
-    <dubbo:service timeout="300000" id="cartServiceInf" interface="jgsu.clong.service.CartService"
+    <dubbo:service id="cartServiceInf" interface="jgsu.clong.service.CartService"
                    ref="cartServiceImpl"/>
     <dubbo:service id="itemServiceI" interface="jgsu.clong.service.ItemServiceI"
                    ref="itemServiceImpl"/>
     <dubbo:service id="orderService" interface="jgsu.clong.service.OrderService"
                    ref="orderServiceImpl"/>
-
-
 </beans>

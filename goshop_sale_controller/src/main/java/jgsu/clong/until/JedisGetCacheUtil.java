@@ -1,6 +1,5 @@
 package jgsu.clong.until;
 
-import jgsu.clong.bean.OBJECT_T_MALL_ATTR;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;

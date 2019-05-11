@@ -1,5 +1,7 @@
 package jgsu.clong.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
+import org.springframework.stereotype.Service;
 import jgsu.clong.bean.OBJECT_T_MALL_FLOW;
 import jgsu.clong.bean.OBJECT_T_MALL_ORDER;
 import jgsu.clong.bean.T_MALL_ADDRESS;
@@ -9,7 +11,6 @@ import jgsu.clong.mapper.OrderMapper;
 import jgsu.clong.service.OrderService;
 import jgsu.clong.until.MyDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.Map;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
+    @Reference
     OrderMapper orderMapper;
     @Override
     public void save_order(T_MALL_ADDRESS get_address, OBJECT_T_MALL_ORDER order) {
